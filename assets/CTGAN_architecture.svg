@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
+  <!-- Definitions for clean look -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <filter id="dropShadow" height="130%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/> <!-- stdDeviation is how much to blur -->
+      <feOffset dx="2" dy="2" result="offsetblur"/> <!-- how much to offset -->
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.2"/> <!-- opacity of shadow -->
+      </feComponentTransfer>
+      <feMerge> 
+        <feMergeNode/> <!-- this contains the offset blurred image -->
+        <feMergeNode in="SourceGraphic"/> <!-- this contains the element that the filter is applied to -->
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Title -->
+  <text x="400" y="30" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#2c3e50">CTGAN Architecture</text>
+
+  <!-- Input Section -->
+  <g transform="translate(250, 60)">
+    <rect x="0" y="0" width="300" height="50" rx="5" fill="#ecf0f1" stroke="#34495e" stroke-width="2" filter="url(#dropShadow)"/>
+    <text x="150" y="30" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#2c3e50">Input: Real Tabular Data</text>
+    <text x="150" y="45" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#7f8c8d">(Mixed: Continuous + Categorical)</text>
+  </g>
+
+  <line x1="400" y1="110" x2="400" y2="140" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Preprocessing -->
+  <g transform="translate(250, 140)">
+    <rect x="0" y="0" width="300" height="60" rx="5" fill="#d5dbdb" stroke="#34495e" stroke-width="2" filter="url(#dropShadow)"/>
+    <text x="150" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#2c3e50">DataTransformer</text>
+    <text x="150" y="45" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#2c3e50">Normalize (Cont) | One-hot (Cat)</text>
+  </g>
+
+  <line x1="400" y1="200" x2="400" y2="230" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Training Phase Container -->
+  <rect x="50" y="230" width="700" height="500" rx="10" fill="#f8f9fa" stroke="#2c3e50" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="400" y="255" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#2c3e50">TRAINING PHASE</text>
+
+  <!-- Generator Side (Left) -->
+  <g transform="translate(100, 270)">
+    <!-- Inputs -->
+    <rect x="0" y="0" width="120" height="40" rx="5" fill="#e8daef" stroke="#8e44ad" stroke-width="2"/>
+    <text x="60" y="25" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#2c3e50">Random Noise (z)</text>
+    
+    <rect x="140" y="0" width="140" height="40" rx="5" fill="#e8daef" stroke="#8e44ad" stroke-width="2"/>
+    <text x="210" y="25" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#2c3e50">Conditional Vector (c)</text>
+
+    <!-- Connect Inputs to Generator -->
+    <line x1="60" y1="40" x2="130" y2="70" stroke="#333" stroke-width="1.5"/>
+    <line x1="210" y1="40" x2="130" y2="70" stroke="#333" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+    <!-- Generator Box -->
+    <g transform="translate(50, 70)">
+        <rect x="0" y="0" width="160" height="180" rx="5" fill="#d2b4de" stroke="#8e44ad" stroke-width="2" filter="url(#dropShadow)"/>
+        <text x="80" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#4a235a">GENERATOR</text>
+        <line x1="10" y1="35" x2="150" y2="35" stroke="#4a235a" stroke-width="1"/>
+        
+        <text x="80" y="60" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#2c3e50">Residual Block 1</text>
+        <text x="80" y="90" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#2c3e50">Residual Block 2</text>
+        <text x="80" y="120" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#2c3e50">Output Layer</text>
+        <text x="80" y="150" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#2c3e50">Activation (tanh/GS)</text>
+    </g>
+
+    <line x1="130" y1="250" x2="130" y2="280" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <rect x="60" y="280" width="140" height="40" rx="5" fill="#fadbd8" stroke="#c0392b" stroke-width="2"/>
+    <text x="130" y="305" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#c0392b">Fake Data (x_fake)</text>
+  </g>
+
+  <!-- Real Data Input (Middle/Right) -->
+  <g transform="translate(450, 270)">
+     <rect x="0" y="280" width="140" height="40" rx="5" fill="#d4efdf" stroke="#27ae60" stroke-width="2"/>
+     <text x="70" y="305" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#27ae60">Real Data (x_real)</text>
+  </g>
+
+  <!-- Arrows to Discriminator -->
+  <path d="M 230 320 L 230 350 L 300 350" fill="none" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <path d="M 520 320 L 520 350 L 440 350" fill="none" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Discriminator Section -->
+  <g transform="translate(300, 350)">
+    <rect x="0" y="0" width="140" height="120" rx="5" fill="#aed6f1" stroke="#2980b9" stroke-width="2" filter="url(#dropShadow)"/>
+    <text x="70" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#154360">DISCRIMINATOR</text>
+    <text x="70" y="40" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#154360">(PacGAN)</text>
+    <line x1="10" y1="48" x2="130" y2="48" stroke="#154360" stroke-width="1"/>
+    
+    <text x="70" y="70" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#2c3e50">Hidden Layer 1</text>
+    <text x="70" y="95" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#2c3e50">Hidden Layer 2</text>
+  </g>
+
+  <line x1="370" y1="470" x2="370" y2="500" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Loss -->
+  <g transform="translate(250, 500)">
+    <rect x="0" y="0" width="240" height="60" rx="5" fill="#fdebd0" stroke="#d35400" stroke-width="2"/>
+    <text x="120" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#6e2c00">Wasserstein Loss + GP</text>
+    <text x="120" y="45" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#6e2c00">Feedback Loop (Backprop)</text>
+  </g>
+
+  <!-- Connect Loss back to Generator/Discriminator (Conceptual lines) -->
+  <path d="M 250 530 L 80 530 L 80 400" fill="none" stroke="#d35400" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="80" y="550" font-family="Arial, sans-serif" font-size="10" fill="#d35400">Updates</text>
+
+  <!-- Sampling Phase Container -->
+  <rect x="50" y="750" width="700" height="200" rx="10" fill="#f2f3f4" stroke="#2c3e50" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="400" y="775" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#2c3e50">SAMPLING PHASE</text>
+
+  <g transform="translate(300, 790)">
+    <rect x="0" y="0" width="200" height="30" rx="5" fill="#e8daef" stroke="#8e44ad" stroke-width="2"/>
+    <text x="100" y="20" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#2c3e50">Noise (z) + Condition (c)</text>
+  </g>
+
+  <line x1="400" y1="820" x2="400" y2="840" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <g transform="translate(325, 840)">
+    <rect x="0" y="0" width="150" height="40" rx="5" fill="#d2b4de" stroke="#8e44ad" stroke-width="2" filter="url(#dropShadow)"/>
+    <text x="75" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#4a235a">Trained Generator</text>
+  </g>
+
+  <line x1="400" y1="880" x2="400" y2="900" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <g transform="translate(250, 900)">
+    <rect x="0" y="0" width="300" height="30" rx="5" fill="#d5dbdb" stroke="#34495e" stroke-width="2"/>
+    <text x="150" y="20" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#2c3e50">DataTransformer.inverse_transform()</text>
+  </g>
+
+  <line x1="400" y1="930" x2="400" y2="950" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <g transform="translate(250, 950)">
+    <rect x="0" y="0" width="300" height="40" rx="5" fill="#fff" stroke="#2c3e50" stroke-width="2" filter="url(#dropShadow)"/>
+    <text x="150" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#2c3e50">OUTPUT: Synthetic Tabular Data</text>
+  </g>
+
+</svg>
