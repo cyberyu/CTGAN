@@ -1,0 +1,101 @@
+================================================================================
+BANK TRANSACTION FRAUD DETECTION - CTGAN SYNTHETIC DATA APPROACH
+Simulating Privacy-Preserving ML: Holdout Branches Strategy
+================================================================================
+
+Loading bank transaction fraud detection dataset...
+Dataset shape: (200000, 24)
+Fraud rate: 5.04%
+
+================================================================================
+STEP 1: SPLITTING DATA - SIMULATING HOLDOUT BRANCHES
+================================================================================
+Total unique branches: 145
+Holdout branches selected: 2
+Holdout branches: ['Ziro Branch', 'Puducherry Branch']
+
+Holdout branch records: 2921 (1.5%)
+Available branch records: 197079 (98.5%)
+
+Holdout branches fraud distribution:
+Is_Fraud
+0    2778
+1     143
+Name: count, dtype: int64
+Holdout fraud rate: 4.90%
+
+Available branches fraud distribution:
+Is_Fraud
+0    187134
+1      9945
+Name: count, dtype: int64
+Available fraud rate: 5.05%
+
+================================================================================
+STEP 2: PREPARING DATA FOR CTGAN
+================================================================================
+Combined dataset for CTGAN: (200000, 15)
+Columns: ['Gender', 'Age', 'State', 'City', 'Account_Type', 'Transaction_Amount', 'Transaction_Type', 'Merchant_Category', 'Account_Balance', 'Transaction_Device', 'Transaction_Location', 'Device_Type', 'Is_Fraud', 'Transaction_Currency', 'branch_id']
+
+Discrete columns for CTGAN: ['Gender', 'State', 'City', 'Account_Type', 'Transaction_Type', 'Merchant_Category', 'Transaction_Device', 'Transaction_Location', 'Device_Type', 'Is_Fraud', 'Transaction_Currency', 'branch_id']
+
+================================================================================
+STEP 3: TRAINING CTGAN ON ALL REAL DATA
+================================================================================
+NOTE: CTGAN sees holdout branch data to learn patterns, but classifier will NOT!
+Training with 600 epochs for high-quality synthetic data...
+
+================================================================================
+✓ FOUND EXISTING SYNTHETIC DATA - SKIPPING TRAINING
+================================================================================
+Loading existing synthetic data: synthetic_fraud_data.csv (55.60 MB)
+
+✓ Loaded 400,000 synthetic samples
+Synthetic data fraud distribution:
+Is_Fraud
+0    378878
+1     21122
+Name: count, dtype: int64
+Synthetic fraud rate: 5.28%
+
+Skipping to Step 5: Training Classifier...
+
+================================================================================
+STEP 5: TRAINING CLASSIFIER ON SYNTHETIC DATA ONLY
+================================================================================
+Encoding categorical columns for XGBoost...
+Categorical columns to encode: ['Gender', 'State', 'City', 'Account_Type', 'Transaction_Type', 'Merchant_Category', 'Transaction_Device', 'Transaction_Location', 'Device_Type', 'Transaction_Currency']
+Encoding complete!
+
+================================================================================
+STEP 5: TRAINING CLASSIFIER ON SYNTHETIC DATA ONLY
+================================================================================
+Synthetic training set: 320,000
+Synthetic validation set: 80,000
+
+Synthetic data class imbalance ratio: 17.94
+Fraud cases in training: 16,898 (5.28%)
+
+Applying SMOTE oversampling to balance training data...
+After SMOTE: 394,032 samples
+Fraud cases after SMOTE: 90,930 (23.08%)
+
+Training XGBoost classifier on balanced synthetic data...
+Model trained on synthetic data!
+
+================================================================================
+STEP 6: TESTING ON REAL HOLDOUT BRANCH DATA
+================================================================================
+This simulates predicting for branches whose real data was never seen by classifier
+
+Holdout test set size: 2,921
+Holdout fraud distribution: {0: np.int64(2778), 1: np.int64(143)}
+
+Finding optimal classification threshold on validation set...
+Optimal threshold: 0.1165 (default=0.5)
+Expected - Precision: 0.0692, Recall: 0.5362, F1: 0.1226
+
+Traceback (most recent call last):
+  File "/mnt/ssd1/projects/CTGAN/scripts/5th_fraud_synthetic_approach.py", line 338, in <module>
+    auc_syn = roc_auc_score(y_holdout_test, y_pred_proba_syn)
+NameError: name 'y_pred_proba_syn' is not defined

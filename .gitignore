@@ -112,3 +112,27 @@ ENV/
 
 # Vim
 .*.swp
+
+# Large CSV files and data
+*.csv
+!examples/csv/*.csv
+!examples/tsv/*.csv
+
+# Model checkpoints and trained models
+*.pkl
+*.pth
+*.h5
+*.hdf5
+*.ckpt
+*.pt
+*.joblib
+*_model.pkl
+*_model_improved.pkl
+ctgan_*.pkl
+tvae_*.pkl
+
+# Generated synthetic data
+synthetic_*.csv
+proxy_*.csv
+*_synthetic_data.csv
+*_proxy_data.csv
